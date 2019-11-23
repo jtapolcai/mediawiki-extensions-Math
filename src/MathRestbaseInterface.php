@@ -124,7 +124,7 @@ class MathRestbaseInterface {
 		$res = null;
 		$serviceClient = $this->getServiceClient();
 		$response = $serviceClient->run( $request );
-		if ( $response['code'] !== 200 ) {
+		if ( $response['code'] !== 200 && $response['code'] !== 0 ) {
 			$this->log()->info( 'Tex check failed:', [
 					'post'  => $request['body'],
 					'error' => $response['error'],
@@ -241,7 +241,7 @@ class MathRestbaseInterface {
 		}
 		$serviceClient = $this->getServiceClient();
 		$response = $serviceClient->run( $request );
-		if ( $response['code'] === 200 ) {
+		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			return $skipConfigCheck || $this->checkConfig();
 		}
 		$this->log()->error( "Restbase backend is not correctly set up.", [
@@ -382,7 +382,7 @@ class MathRestbaseInterface {
 	 */
 	public function evaluateRestbaseCheckResponse( $response ) {
 		$json = json_decode( $response['body'] );
-		if ( $response['code'] === 200 ) {
+		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			$headers = $response['headers'];
 			$this->hash = $headers['x-resource-location'];
 			$this->success = $json->success;
@@ -439,7 +439,7 @@ class MathRestbaseInterface {
 	 * @throws MWException
 	 */
 	private function evaluateContentResponse( $type, array $response, array $request ) {
-		if ( $response['code'] === 200 ) {
+		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			if ( array_key_exists( 'x-mathoid-style', $response['headers'] ) ) {
 				$this->mathoidStyle = $response['headers']['x-mathoid-style'];
 			}
