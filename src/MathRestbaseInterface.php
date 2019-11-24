@@ -384,10 +384,18 @@ class MathRestbaseInterface {
 		$json = json_decode( $response['body'], true);
 		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			$headers = $response['headers'];
-			$this->hash = $headers['x-resource-location'];
-			$this->success = $json['success'];
-			$this->checkedTex = $json['checked'];
-			$this->identifiers  = $json['identifiers'];
+			if ( array_key_exists('x-resource-location', $headers) ) {
+				$this->hash = $headers['x-resource-location'];
+			}
+			if ( array_key_exists('success', $json ) ) {
+				$this->success = $json['success'];
+				$this->checkedTex = $json['checked'];
+				$this->identifiers  = $json['identifiers'];				
+			} else {
+				$this->success = false;
+				$this->setErrorMessage( 'Warning! Math extension returned: '.$response['body'] );
+				return false
+			}
 			if ( array_key_exists('warnings', $json ) ) {
 				$this->warnings = $json['warnings'];
 			}
