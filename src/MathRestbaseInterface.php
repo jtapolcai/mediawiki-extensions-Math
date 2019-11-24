@@ -381,21 +381,21 @@ class MathRestbaseInterface {
 	 * @return bool
 	 */
 	public function evaluateRestbaseCheckResponse( $response ) {
-		$json = json_decode( $response['body'],true );
+		$json = json_decode( $response['body'] ,true );
 		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			$headers = $response['headers'];
 			$this->hash = $headers['x-resource-location'];
-			$this->success = $json['success'];
-			$this->checkedTex = $json['checked'];
-			$this->identifiers = $json['identifiers'];
-			if ( array_key_exists('warnings', $json ) ) {
-				$this->warnings = $json['warnings'];
+			$this->success = $json->success;
+			$this->checkedTex = $json->checked;
+			$this->identifiers = $json->identifiers;
+			if ( isset( $json->warnings ) ) {
+				$this->warnings = $json->warnings;
 			}
 			return true;
 		} else {
-			if ( array_key_exists('detail', $json ) && array_key_exists('success', $json['detail'] ) ) {
-				$this->success = $json['detail']['success'];
-				$this->error = $json['detail'];
+			if ( isset( $json->detail ) && isset( $json->detail->success ) ) {
+				$this->success = $json->detail->success;
+				$this->error = $json->detail;
 			} else {
 				$this->success = false;
 				$this->setErrorMessage( 'Math extension cannot connect to Restbase.' );
@@ -463,14 +463,17 @@ class MathRestbaseInterface {
 	 */
 	public static function throwContentError( $type, $body ) {
 		$detail = 'Server problem.';
-		$json = json_decode( $body );
-		if ( array_key_exists('detail', $json ) ) {
-			if ( is_array( $json['detail'] ) ) {
-				$detail = $json['detail'][0];
-			} elseif ( array_key_exists('detail', $json )  ) {
-				$detail = $json['detail'];
+		$json = json_decode( $body , true);
+		if ( isset( $json->detail ) ) {
+			if ( is_array( $json->detail ) ) {
+				$detail = $json->detail[0];
+			} elseif ( is_string( $json->detail ) ) {
+				$detail = $json->detail;
 			}
 		}
 		throw new MWException( "Cannot get $type. $detail" );
 	}
 }
+×
+Drag and Drop
+The image will be downloaded
