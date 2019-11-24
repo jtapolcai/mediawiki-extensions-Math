@@ -14,7 +14,7 @@ class MathRestbaseInterface {
 	private $type;
 	private $checkedTex;
 	private $success;
-	private $identifiers;
+	private $identifiers = [];
 	private $error;
 	private $mathoidStyle;
 	private $mml;
@@ -387,11 +387,7 @@ class MathRestbaseInterface {
 			$this->hash = $headers['x-resource-location'];
 			$this->success = $json['success'];
 			$this->checkedTex = $json['checked'];
-			if ( is_array( $json['identifiers'] ) ) {
-				$this->identifiers  = $json['identifiers'][0];
-			} elseif ( array_key_exists('identifiers', $json )  ) {
-				$this->identifiers  = $json['identifiers'];
-			}
+			$this->identifiers  = $json['identifiers'];
 			if ( array_key_exists('warnings', $json ) ) {
 				$this->warnings = $json['warnings'];
 			}
