@@ -394,7 +394,7 @@ class MathRestbaseInterface {
 			} else {
 				$this->success = false;
 				$this->setErrorMessage( 'Warning! Math extension returned: '.$response['body'] );
-				return false
+				return false;
 			}
 			if ( array_key_exists('warnings', $json ) ) {
 				$this->warnings = $json['warnings'];
