@@ -474,6 +474,4 @@ class MathRestbaseInterface {
 		throw new MWException( "Cannot get $type. $detail" );
 	}
 }
-×
-Drag and Drop
-The image will be downloaded
+
