@@ -381,7 +381,7 @@ class MathRestbaseInterface {
 	 * @return bool
 	 */
 	public function evaluateRestbaseCheckResponse( $response ) {
-		$json = json_decode( $response['body'] );
+		$json = json_decode( $response['body'],true );
 		if ( $response['code'] === 200 || $response['code'] === 0 ) {
 			$headers = $response['headers'];
 			$this->hash = $headers['x-resource-location'];
